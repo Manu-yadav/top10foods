@@ -1,14 +1,16 @@
 package com.example.top10foods.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.top10foods.R
 import com.example.top10foods.adaptors.MainActAdaptor
+import com.example.top10foods.interfaces.IMainActivityClickListener
 import com.example.top10foods.models.BestFoodModel
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), IMainActivityClickListener {
     private lateinit var mRecyclerViewFood: RecyclerView
     private lateinit var mTypesOfFoodList: ArrayList<BestFoodModel>
     private lateinit var mMainActAdaptor: MainActAdaptor
@@ -52,5 +54,12 @@ class MainActivity : BaseActivity() {
         bestFoodModel3.setFoodDescription("Reduce you cholesterol")
         mTypesOfFoodList.add(bestFoodModel3)
 
+    }
+
+    override fun recyclerViewClickListener(title: String, description: String) {
+        val intent = Intent(this, DescriptionActivity::class.java)
+        intent.putExtra("TITLE", title)
+        intent.putExtra("DESCRIPTION", description)
+        startActivity(intent)
     }
 }

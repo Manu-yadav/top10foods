@@ -1,37 +1,51 @@
 package com.example.top10foods.adaptors
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.top10foods.R
+import com.example.top10foods.interfaces.IMainActivityClickListener
 import com.example.top10foods.models.BestFoodModel
-import java.security.AccessControlContext
 
-public class MainActAdaptor(foodList: ArrayList<BestFoodModel>, context: Context) :
-    RecyclerView.Adapter<MainActAdaptor.MyViewHolder>() {
-
-    private lateinit var mContext: Context
-    private lateinit var mFoodList: ArrayList<BestFoodModel>
-
-    fun MainActAdaptor(foodList: ArrayList<BestFoodModel>, context: Context): Unit {
-        this.mFoodList = foodList
-        this.mContext = context
-    }
+public class MainActAdaptor(
+    private val foodList: ArrayList<BestFoodModel>,
+    private val mainActivityClickListener: IMainActivityClickListener
+) : RecyclerView.Adapter<MainActAdaptor.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        TODO("Not yet implemented")
+        // Create a new view, which defines the UI of the list item
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.text_row_item, parent, false)
+        return MyViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return foodList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val foodModel = foodList[position]
+        holder.title.text = foodModel.getTitle()
+        holder.description.text = foodModel.getDescription()
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+        var title: TextView = itemView.findViewById(R.id.tv_title)
+        var description: TextView = itemView.findViewById(R.id.tv_description)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            mainActivityClickListener.recyclerViewClickListener(
+                foodList.get(adapterPosition).getTitle(), foodList.get(adapterPosition).getTitle()
+            )
+        }
     }
 
 }
